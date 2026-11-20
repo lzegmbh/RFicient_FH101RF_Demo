@@ -1,6 +1,7 @@
 # Build results
 
-Reference build sizes for all sketches in this repository.
+Reference build sizes for all sketches in this repository. The same builds run in CI on every
+push, see `.github/workflows/compile-sketches.yml`.
 
 All numbers were measured with `arduino-cli` and are reproducible with the commands below.
 
