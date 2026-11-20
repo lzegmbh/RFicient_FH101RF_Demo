@@ -116,5 +116,5 @@ only the SAW filter differs between the two board versions. A board therefore su
 5. `RESET_N` not held high.
 6. No other device active on the bus while the receiver is addressed.
 
-The driver reports what it found on `RegVersion`; the meaning of each value is in the top level
-`README.md` under *Troubleshooting*.
+The sketch prints the IC version it read from register `0x7F`; the expected value is `0x41`.
+Further faults are covered in [Troubleshooting](../wiki/troubleshooting.md).

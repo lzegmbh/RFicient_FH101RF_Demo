@@ -37,39 +37,12 @@ typically about 1 s, because `XTAL_GOOD` is only set after roughly 0.5 s.
 
 ### 915 MHz (nonEU variant of the BOB)
 
-The FH101RF has three band paths (433, 868, 2G4) — a separate **915 MHz path
-does not exist**. 868 and 915 share the same path, the same matching network and
-the same SMA connector. What differs between the two BOB variants is only the
-**SAW filter in that shared path**:
-
-| BOB variant | Receiving bands | SAW filter in the 868/915 path | Center frequency |
-|---|---|---|---|
-| `FH101RFBOB_EU_V1.0` | 433 / 868 / 2G4 | RF360 `B39871B3744H110` | **868.3 MHz** |
-| `FH101RFBOB_nonEU_V1.0` | 433 / 915 / 2G4 | RF360 `B39921B3300H110` | **916.5 MHz** |
-
-The 433 MHz and the 2.4 GHz positions are identical on both variants (populated
-with `B39431B3790Z810` and `B39252B7556P810`); only the 868/915 position is
-populated differently.
-
-Consequences:
-
-- **868 and 915 are mutually exclusive on one board.** The EU board cannot
-  receive 915 MHz, the nonEU board cannot receive 868 MHz — the SAW filter
-  blocks the respective other frequency. A band that is not on the board cannot
-  be enabled by software.
-- **The preset has to match the fitted filter, not the IC.** Both variants are
-  configured through the same 868 MHz band path of the IC, so only the LO target
-  changes in software.
-- The nonEU filter is centered at **916.5 MHz**, not at 915 MHz. That is why the
-  preset is named `916` and why `lo_target_868 = 956` fits so well:
-  956 − 916.5 = **39.5 MHz** IF, essentially the datasheet optimum of 40 MHz.
-- The sensitivity is the same on both paths: −72 dBm at 868.3 MHz and −72 dBm at
-  916.5 MHz.
-- The nonEU variant goes with the antenna Linx `ANT-916-CW-HWR-SMA`
-  (EU: `ANT-868-CW-HWR-SMA`).
-
-Source: `FH101RFBOB_en_V1R3.pdf`, sections 1 (Introduction), 4 (Board structure,
-Table 3), 5 (Operating conditions) and 6 (Ordering information).
+The FH101RF has three band paths (433, 868, 2G4) and no separate 915 MHz path.
+868 and 915 share one path; which of the two a board can receive is decided by
+the SAW filter fitted on it (EU variant: 868.3 MHz, nonEU variant: 916.5 MHz).
+The two bands are therefore mutually exclusive on one board, and the preset has
+to match the fitted filter. The filter table, the matching antennas and the
+source are in [wiki/hardware.md](../wiki/hardware.md#eu-vs-noneu-the-868--915-mhz-signal-path).
 
 ### Preset for 915 MHz
 
@@ -171,14 +144,3 @@ reason, band, correlator value, counter value, FIFO content).
 - `wurx_init()` only returns the overall status. Details (XTAL, LO cal, offset
   cal) are read back in the sketch through the status registers.
 - The driver files `wurx.c` and `wurx.h` are included unmodified.
-
-## Plausibility Check
-
-The configuration has been verified against the official FH101RF datasheet and all parameters match the specifications for 868 MHz operation:
-- SPI configuration (Mode 0, MSB first, max. 10 MHz) - correct
-- Band: 868 MHz with all branches enabled - correct
-- Preamble rate: 1 kbit/s - correct
-- Data rate: 32 kbit/s - correct
-- LO target: 920 MHz - correct
-- IRQ source: ID match + slow event - correct
-- SAW filter: B39871B3744H110 centered on 868.3 MHz - correct

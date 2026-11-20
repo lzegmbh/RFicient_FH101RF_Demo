@@ -93,6 +93,6 @@ The two examples inside `FH101RFTX/` use `--library FH101RFTX` because they incl
 `wurx_telegram.h` from the library folder. In the Arduino IDE the library has to be installed
 (copy or link the folder `FH101RFTX` into `<sketchbook>/libraries/`).
 
-Note: `examples/WurxTelegramDump/` additionally contains copies of `wurx_telegram.c` and
-`wurx_telegram.h`. These copies take precedence over the library as long as they sit in the
-sketch folder.
+Note: the example folders contain copies of `wurx_telegram.c` and `wurx_telegram.h`, so they
+also build without the library being installed. A copy takes precedence over the library as long
+as it sits in the sketch folder. The copies are kept identical to `FH101RFTX/src/` by a CI check.

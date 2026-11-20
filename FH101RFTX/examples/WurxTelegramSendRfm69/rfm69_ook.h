@@ -282,6 +282,28 @@ uint32_t rfm69_ook_send(const uint8_t *data, uint16_t length);
 void rfm69_ook_standby(void);
 
 /**
+ * @brief set the transmit power at runtime
+ * @param dBm output power, -18 .. +13 dBm on the PA_BOOST output
+ * @retval true if the register was written and read back unchanged
+ *
+ * rfm69_ook_begin() programs RFM69_TX_POWER_DBM, which is a compile time
+ * constant baked into rfm69_ook.cpp. This function overrides it at runtime,
+ * which is needed whenever the power has to be matched to the link: a
+ * receiver sitting centimetres away from the antenna is easily overloaded
+ * by 0 dBm, and a wake-up receiver then detects nothing at all.
+ *
+ * The write is verified by reading RegPaLevel back, so a missed SPI access
+ * cannot leave the module on a power level nobody expects.
+ */
+bool rfm69_ook_set_power_dbm(int8_t dBm);
+
+/**
+ * @brief read back RegPaLevel
+ * @retval register value, e.g. 0x52 for 0 dBm on PA_BOOST
+ */
+uint8_t rfm69_ook_power_reg(void);
+
+/**
  * @brief bit rate register value that was programmed by rfm69_ook_begin()
  * @retval 16 bit RegBitrate value, 0 if not configured
  */
