@@ -1,0 +1,8 @@
+﻿__pycache__/
+*.pyc
+build/
+*.iq
+
+# local measurement and diagnostic scratch space, not part of the project
+tools/
+
