@@ -1,0 +1,51 @@
+# GitHub keeps the wiki in a separate repository (<repo>.wiki.git).
+# The wiki/ folder in this repository is the source of truth; this workflow
+# mirrors it into the wiki repository on every push to main.
+name: Sync wiki
+
+on:
+  push:
+    branches: [main]
+    paths: ['wiki/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Queue runs instead of cancelling them, so the last push always ends up in the wiki.
+concurrency:
+  group: sync-wiki
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          path: repo
+
+      - name: Check out wiki
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          path: wiki
+
+      # --delete removes pages from the wiki that no longer exist in wiki/,
+      # including pages edited only through the GitHub web UI.
+      - name: Mirror wiki folder
+        run: rsync -a --delete --exclude .git --itemize-changes repo/wiki/ wiki/
+
+      - name: Commit and push
+        working-directory: wiki
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Wiki already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -m "docs: sync wiki from ${GITHUB_REPOSITORY}@${GITHUB_SHA::7}"
+          git push
