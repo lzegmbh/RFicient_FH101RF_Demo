@@ -1,0 +1,48 @@
+# Compiles every example sketch for the boards it is documented for, so a
+# change that breaks a build is noticed before it reaches main.
+name: Compile sketches
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile:
+    name: ${{ matrix.sketch }} (${{ matrix.fqbn }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - sketch: FH101TRX
+            fqbn: adafruit:samd:adafruit_feather_m0
+          - sketch: FH101RFRX
+            fqbn: adafruit:samd:adafruit_feather_m0
+          - sketch: FH101RFRX
+            fqbn: arduino:avr:uno
+          - sketch: FH101RFTX/examples/WurxTelegramSendRfm69
+            fqbn: adafruit:samd:adafruit_feather_m0
+          - sketch: FH101RFTX/examples/WurxTelegramDump
+            fqbn: arduino:avr:uno
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      # Every sketch folder contains all sources it needs, so no library is
+      # installed. The empty list also stops the action from installing the
+      # repository itself as a library, which is its default.
+      - name: Compile sketch
+        uses: arduino/compile-sketches@v1
+        with:
+          fqbn: ${{ matrix.fqbn }}
+          platforms: |
+            - name: arduino:avr
+            - name: adafruit:samd
+              source-url: https://adafruit.github.io/arduino-board-index/package_adafruit_index.json
+          libraries: "[]"
+          sketch-paths: |
+            - ${{ matrix.sketch }}

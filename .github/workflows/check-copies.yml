@@ -1,0 +1,61 @@
+# Every sketch folder carries its own copy of the driver sources, because the
+# Arduino build only compiles files that sit inside the sketch folder. Each
+# copy has one master file. This workflow fails when a copy differs from it.
+name: Check driver copies
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Compare the copies with their master files
+        run: |
+          status=0
+          check() {
+            master="$1"
+            shift
+            for copy in "$@"; do
+              if cmp -s "$master" "$copy"; then
+                echo "ok      $copy"
+              else
+                echo "::error file=$copy::$copy differs from its master file $master"
+                status=1
+              fi
+            done
+          }
+
+          # FH101RF driver
+          check wurx.c FH101RFRX/wurx.c FH101TRX/wurx.c
+          check wurx.h FH101RFRX/wurx.h FH101TRX/wurx.h
+
+          # telegram generator
+          tg=FH101RFTX/src
+          check $tg/wurx_telegram.c FH101RFTX/examples/WurxTelegramDump/wurx_telegram.c \
+                FH101RFTX/examples/WurxTelegramSendRfm69/wurx_telegram.c FH101TRX/wurx_telegram.c
+          check $tg/wurx_telegram.h FH101RFTX/examples/WurxTelegramDump/wurx_telegram.h \
+                FH101RFTX/examples/WurxTelegramSendRfm69/wurx_telegram.h FH101TRX/wurx_telegram.h
+
+          # RFM69 OOK transmitter driver
+          rfm=FH101RFTX/examples/WurxTelegramSendRfm69
+          check $rfm/rfm69_ook.cpp FH101TRX/rfm69_ook.cpp
+          check $rfm/rfm69_ook.h   FH101TRX/rfm69_ook.h
+
+          # Arduino platform layer of the FH101RF driver
+          check FH101RFRX/fh101rf_platform.cpp FH101TRX/fh101rf_platform.cpp
+          check FH101RFRX/fh101rf_platform.h   FH101TRX/fh101rf_platform.h
+          check FH101RFRX/fh101rf_config.h     FH101TRX/fh101rf_config.h
+
+          # photo used by the README and by the wiki
+          check docs/test-setup.jpg wiki/test-setup.jpg
+
+          exit $status

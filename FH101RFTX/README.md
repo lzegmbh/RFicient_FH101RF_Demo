@@ -207,9 +207,9 @@ Configuration (`rfm69_ook.cpp`):
 > DIO2/DATA pin. **The FIFO and packet handler are thus inactive.**”*
 > With `RegDataModul = 0x48` (continuous with bit sync) the FIFO is therefore
 > completely switched off: every FIFO write is discarded, the modulator never
-> sees data and the PA transmits a **flat, unmodulated carrier**. That was
-> exactly the fault — the spectrum analyser showed a signal, but with 4.4 %
-> envelope swing instead of 90 %.
+> sees data and the PA transmits a **flat, unmodulated carrier**. On a
+> spectrum analyser this shows as a signal with 4.4 % envelope swing instead
+> of about 90 %.
 >
 > `PacketFormat = 0` + `PayloadLength = 0x00` selects the **unlimited length
 > packet format** (datasheet 5.5.2.3). With `PreambleLength = 0` and
@@ -259,9 +259,9 @@ sent: ID 0x7DA8, 2 payload byte(s), 260 byte(s), 62855 us
 Notes on this example:
 
 - 868.4 MHz is 100 kHz above the center frequency of the 868 MHz SAW filter on
-  the FH101RFBOB (868.3 MHz) and therefore safely inside the passband. With the
-  earlier default of 868.8 MHz the distance was 500 kHz, which meant too much
-  attenuation depending on the filter bandwidth.
+  the FH101RFBOB (868.3 MHz) and therefore safely inside the passband. A carrier
+  at 868.8 MHz is 500 kHz away, which can mean too much attenuation depending
+  on the filter bandwidth.
 - The SX1231 is specified for OOK operation up to about 32.768 kbit/s; at
   33092 Hz it sits exactly on the 1 % offset required for the FH101RF.
 - The FIFO holds 66 bytes, which is 15.9 ms at 33092 Hz. A 260 byte telegram
@@ -274,7 +274,7 @@ Notes on this example:
   Measurements gave `duration(FIFO empty) = fixed share + one byte time`,
   independent of the payload length, and an unmodulated carrier went out on the
   air. According to datasheet 5.4.1 the FIFO is completely inactive in this
-  mode. Since the change to packet mode the drain time scales with
+  mode. In packet mode the drain time scales with
   `1/RegBitrate` (measured: 46768 µs at 967, 93467 µs at 1934, 225740 µs at
   4835, 23478 µs at 484) and the envelope shows 93 % swing instead of 4.4 %.
 - `rfm69_ook_send()` opens **one** SPI transaction for the whole transmission.
@@ -317,7 +317,7 @@ which the PA is not at full power. That cannot be avoided; anyone who needs more
 energy per chip has to raise the transmit power (`RFM69_TX_POWER_DBM` up to
 `13`).
 
-If the sketch reports `RFM69HCW not found`, it now prints the version actually
+If the sketch reports `RFM69HCW not found`, it prints the version actually
 read, the SPI clock used and the result of a register write/read test:
 
 | Output | Meaning |
@@ -329,9 +329,9 @@ read, the SPI clock used and the result of a register write/read test:
 
 `rfm69_ook_begin()` starts the SPI bus itself (`SPI.begin()`), pulses RESET and
 reads `RegVersion` again with a descending SPI clock (8 MHz, 4 MHz, 1 MHz,
-250 kHz). The earlier error “RegVersion != 0x24” came from the missing
-`SPI.begin()`: `SPI.beginTransaction()` alone does not enable the SERCOM
-peripheral on SAMD, so all transfers read `0x00`.
+250 kHz). The `SPI.begin()` call is required: `SPI.beginTransaction()` alone
+does not enable the SERCOM peripheral on SAMD, so all transfers would read
+`0x00`.
 
 ### RESET is active HIGH — a common pitfall
 
@@ -369,21 +369,6 @@ Diagnostic commands of the example (through the serial console):
 Without a key press the sketch sends the telegram every `TX_REPEAT_MS`
 (default 2000 ms).
 
-### Historical: the FIFO round-trip test
-
-During fault finding there was a command `q` that printed, for every data mode,
-how many of the eight test bytes are read back from the FIFO:
-
-```
-fifo @ datamodul 0x0  : 8/8, first 0x11     <- packet mode, FIFO works
-fifo @ datamodul 0x48 : 0/8, first 0x0      <- continuous, FIFO switched off
-```
-
-That was the fastest way to distinguish “the PA does not modulate” from “the
-chip ignores the FIFO”, and it uncovered the data mode fault. The command has
-been removed since; the insight is documented above under “Why packet mode and
-not continuous mode?”.
-
 ### Compiling
 
 ```bash
@@ -395,11 +380,11 @@ In the Arduino IDE the library has to be installed (copy or link the folder
 `FH101RFTX` into `<sketchbook>/libraries/`), otherwise the compiler does not
 find `wurx_telegram.h`.
 
-Note: `examples/WurxTelegramDump/` additionally contains copies of
-`wurx_telegram.c` and `wurx_telegram.h`. These copies take precedence over the
-library as long as they sit in the sketch folder — the sketch then does not use
-the library version. For a consistent version the copies should be removed and
-the library installed.
+Note: the example folders contain copies of `wurx_telegram.c` and
+`wurx_telegram.h`, so they also build without the library being installed. A
+copy takes precedence over the library as long as it sits in the sketch
+folder. The copies are kept identical to `src/` by the CI check
+`.github/workflows/check-copies.yml`.
 
 ## Verification
 

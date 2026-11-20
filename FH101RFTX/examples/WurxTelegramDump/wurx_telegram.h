@@ -88,13 +88,13 @@ extern "C" {
 /**
  * @brief size of the internal buffer used by wurx_tg_generate()
  *
- * 196 bytes for the ID-only telegram plus 32 bytes per payload byte.
- * The default holds the ID and a two byte payload, which matches the
- * default FIFO length of the receiver. Use wurx_tg_build() with a caller
- * supplied buffer for longer payloads.
+ * Required size in bytes is 196 for the ID-only telegram plus 32 bytes per
+ * payload byte, i.e. 196 + 32 * size. The default of 388 bytes holds the ID
+ * and a six byte payload. Use wurx_tg_build() with a caller supplied buffer
+ * for longer payloads.
  */
 #ifndef WURX_TG_BUFFER_SIZE
-#define WURX_TG_BUFFER_SIZE 6*130u
+#define WURX_TG_BUFFER_SIZE 388u
 #endif
 
 /** @brief CodeA sequence (logical 0), 32-bit mlsA, datasheet table 23 */

@@ -68,8 +68,56 @@ Consequences for using the board:
 - The matching antenna for the nonEU board is the Linx `ANT-916-CW-HWR-SMA`
   (EU: `ANT-868-CW-HWR-SMA`).
 
-Source: `FH101RFBOB_en_V1R3.pdf`, sections 1 (Introduction), 4 (Board structure, Table 3),
-5 (Operating conditions) and 6 (Ordering information).
+Source: [FH101RFBOB data sheet](https://www.lze-innovation.de/cdn/shop/files/LZE_fh101rfbobdatasheet_0103_A_OEB.pdf), Edition 1 Revision 3, sections
+*Introduction*, *Board structure* (Table 3), *Operating conditions* (Table 5) and
+*Ordering information*.
+
+## Ordering information
+
+The hardware is available in the [LZE Innovation store](https://www.lze-innovation.de).
+The GTIN identifies the exact variant and is also used as the article number
+(SKU) in the store.
+
+**FH101RFBOB breakout board** - [product page](https://www.lze-innovation.de/products/rficient-breakout-board)
+
+| Board version | Antennas included | GTIN |
+|---|---|---|
+| EU (433 / 868 / 2G4) | none | 4251800200138 |
+| EU | 433 MHz | 4251800200152 |
+| EU | 868 MHz | 4251800200169 |
+| EU | 2.4 GHz | 4251800200176 |
+| EU | 433 MHz + 868 MHz | 4251800200183 |
+| EU | 433 MHz + 2.4 GHz | 4251800200190 |
+| EU | 868 MHz + 2.4 GHz | 4251800200206 |
+| EU | 433 MHz + 868 MHz + 2.4 GHz | 4251800200213 |
+| nonEU (433 / 915 / 2G4) | none | 4251800200145 |
+| nonEU | 433 MHz | 4251800200220 |
+| nonEU | 915 MHz | 4251800200237 |
+| nonEU | 2.4 GHz | 4251800200244 |
+| nonEU | 433 MHz + 915 MHz | 4251800200251 |
+| nonEU | 433 MHz + 2.4 GHz | 4251800200268 |
+| nonEU | 915 MHz + 2.4 GHz | 4251800200275 |
+| nonEU | 433 MHz + 915 MHz + 2.4 GHz | 4251800200282 |
+
+The test setup in this project corresponds to the EU version with the 868 MHz
+antenna (GTIN 4251800200169).
+
+**FH101RF wake-up receiver IC** - [product page](https://www.lze-innovation.de/products/rficient-iot-ic), GTIN 4251800200107
+
+Both products are sold to business customers. The Adafruit Feather M0 RFM69HCW is
+a third-party product.
+
+## Data sheets
+
+The data sheets are published in the LZE Innovation store and are not part of
+the repository:
+
+| Document | Content | Download |
+|---|---|---|
+| RFicient® FH101RF data sheet, Rev. 1.3b | register map, telegram timing, calibration procedure, electrical characteristics | [PDF](https://www.lze-innovation.de/cdn/shop/files/FH101RF_LZE_Datasheet_Revision_1p3b_A_1_1.pdf) · [product page](https://www.lze-innovation.de/products/rficient-iot-ic) |
+| RFicient® FH101RF Breakout Board data sheet, Edition 1 Revision 3 | board structure, pin assignment, SAW filters, operating conditions, schematic | [PDF](https://www.lze-innovation.de/cdn/shop/files/LZE_fh101rfbobdatasheet_0103_A_OEB.pdf) · [product page](https://www.lze-innovation.de/products/rficient-breakout-board) |
+
+The product pages list the current revision of each document.
 
 ## Next
 

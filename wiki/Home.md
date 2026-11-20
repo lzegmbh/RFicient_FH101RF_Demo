@@ -42,6 +42,7 @@ One event every 3062 ms, no dropouts. All four example sketches compile unchange
 |---|---|
 | See the whole link working in ten minutes | [Getting started](getting-started) |
 | Understand the board and the antenna situation | [Hardware](hardware) |
+| Order the hardware or get the data sheets | [Hardware](hardware#ordering-information) |
 | Connect the BOB to the Feather | [Wiring](wiring) |
 | Know what is on the air | [Signal format](signal-format) |
 | Switch band or change the preset | [Configuration](configuration) |
@@ -61,11 +62,12 @@ One event every 3062 ms, no dropouts. All four example sketches compile unchange
 ├── FH101RFTX/              Transmitter library (portable C11) + two examples
 ├── FH101TRX/               Ready-to-use link test on a single board
 ├── docs/                   Photo of the test setup
-├── FH101RFBOB_en_V1R3.pdf  Breakout board documentation (LZE GmbH)
-└── FH101RF_LZE_Datasheet_Revision_1p3b_A_1_1.pdf
+└── wiki/                   Source of this wiki
 ```
+
+The data sheets are not part of the repository, see [Hardware](hardware#data-sheets).
 
 ## License
 
-MIT. The FH101RFBOB documentation and the FH101RF datasheet are third-party documents and are
-not covered by this license.
+MIT. The FH101RF data sheet and the FH101RFBOB data sheet are separate documents published by
+LZE GmbH and are not covered by this license.

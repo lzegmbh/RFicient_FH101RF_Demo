@@ -33,7 +33,7 @@ FH101RFRX/
 
 Any additional source file in that folder is compiled and linked too. A stray test file that
 defines `wurx_write_reg()`, `wurx_read_reg()`, `delay()` or `pinMode()` collides with the real
-driver and with the core - see [COMPILE_RESULTS.md](COMPILE_RESULTS.md).
+driver and with the core, and the linker stops with `multiple definition of ...`.
 
 ## Compiling with the Arduino CLI
 

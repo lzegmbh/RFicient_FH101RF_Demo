@@ -67,41 +67,19 @@ antenna that matches the fitted SAW filter (Linx `ANT-868-CW-HWR-SMA` for
 
 ### EU vs. nonEU: the 868 / 915 MHz signal path
 
-The FH101RF IC has three band paths (433, 868, 2G4). There is **no separate
-915 MHz path** - 868 and 915 share the same path, the same matching network and
-the same SMA connector. What differs between the two board versions is the
-**SAW filter fitted into that shared path**, and that filter decides which of
-the two frequencies the board can actually hear:
+The FH101RF IC has three band paths (433, 868, 2G4) and **no separate 915 MHz
+path**. 868 and 915 share one path; the SAW filter fitted on the board decides
+which of the two frequencies the board can receive:
 
-| Board version | Receiving bands | SAW filter in the 868/915 path | Center frequency |
+| Board version | Receiving bands | SAW filter center frequency | Matching preset |
 |---|---|---|---|
-| `FH101RFBOB_EU_V1.0` | 433 / 868 / 2G4 | RF360 `B39871B3744H110` | **868.3 MHz** |
-| `FH101RFBOB_nonEU_V1.0` | 433 / 915 / 2G4 | RF360 `B39921B3300H110` | **916.5 MHz** |
+| `FH101RFBOB_EU_V1.0` | 433 / 868 / 2G4 | 868.3 MHz | `wurx_conf_868_1k_32k_idm2slow_allbranch_dout1` |
+| `FH101RFBOB_nonEU_V1.0` | 433 / 915 / 2G4 | 916.5 MHz | `wurx_conf_916_1k_32k_idm2slow_allbranch_dout1` |
 
-Both versions use the same 433 MHz filter (RF360 `B39431B3790Z810`, 433.9 MHz)
-and the same 2.4 GHz filter (RF360 `B39252B7556P810`, 2478 MHz); only the
-868/915 position is populated differently.
-
-Consequences for using the board:
-
-- **868 and 915 are mutually exclusive on one board.** The EU board cannot
-  receive 915 MHz and the nonEU board cannot receive 868 MHz - the SAW filter
-  in front of the receiver blocks the other frequency. A band that is not on
-  the board cannot be enabled by software.
-- **The software preset has to match the fitted filter, not the IC.** Both
-  versions are configured through the same 868 MHz band path of the IC, so the
-  only thing that changes in software is the LO target.
-- The nonEU filter is centered at **916.5 MHz**, not 915 MHz. That is why the
-  915 preset is named `916` and why `lo_target_868 = 956` fits so well:
-  956 − 916.5 = **39.5 MHz** intermediate frequency, essentially the datasheet
-  optimum of 40 MHz.
-- Sensitivity is the same on both paths: −72 dBm at 868.3 MHz and −72 dBm at
-  916.5 MHz.
-- The matching antenna for the nonEU board is the Linx `ANT-916-CW-HWR-SMA`
-  (EU: `ANT-868-CW-HWR-SMA`).
-
-Source: `FH101RFBOB_en_V1R3.pdf`, sections 1 (Introduction), 4 (Board
-structure, Table 3), 5 (operating conditions) and 6 (Ordering information).
+868 and 915 are mutually exclusive on one board, and the software preset has to
+match the fitted filter. The filter part numbers, the matching antennas and the
+consequences for using the board are described in
+[wiki/hardware.md](wiki/hardware.md#eu-vs-noneu-the-868--915-mhz-signal-path).
 
 ## Signal format
 
@@ -186,9 +164,10 @@ through 1 kΩ resistors on the board.
 ├── FH101TRX/               Ready-to-use link test: on-board RFM69 sends, FH101RFBOB receives
 ├── docs/
 │   └── test-setup.jpg      Photo of the test setup (FH101RFBOB and Feather M0)
-├── FH101RFBOB_en_V1R3.pdf  Breakout board documentation (LZE GmbH)
-└── FH101RF_LZE_Datasheet_Revision_1p3b_A_1_1.pdf
+└── wiki/                   Source of the GitHub wiki, mirrored on every push to main
 ```
+
+The data sheets are not part of the repository, see [Data sheets](#data-sheets).
 
 ## Example sketches
 
@@ -215,6 +194,16 @@ Every sketch folder carries its own copy of the driver sources it uses, so the
 folders are self-contained and can be copied out of the repository on their own.
 The only thing to adapt is the pin assignment in `fh101rf_config.h` if the
 wiring differs from the one shown above.
+
+Each copied file has one master file; a CI check (`.github/workflows/check-copies.yml`)
+fails as soon as a copy differs from it. Change the master file and copy it over:
+
+| File | Master | Copies in |
+|---|---|---|
+| `wurx.c` / `wurx.h` | repository root | `FH101RFRX/`, `FH101TRX/` |
+| `wurx_telegram.c` / `.h` | `FH101RFTX/src/` | `FH101RFTX/examples/*/`, `FH101TRX/` |
+| `rfm69_ook.cpp` / `.h` | `FH101RFTX/examples/WurxTelegramSendRfm69/` | `FH101TRX/` |
+| `fh101rf_platform.cpp` / `.h`, `fh101rf_config.h` | `FH101RFRX/` | `FH101TRX/` |
 
 The driver is plain C11 without any RTOS dependency. The only platform hooks are
 the three weak functions that the application has to provide:
@@ -300,16 +289,59 @@ The LO target puts the nonEU filter center frequency at an intermediate
 frequency of 39.5 MHz (956 − 916.5), right at the datasheet optimum of 40 MHz.
 A carrier at exactly 915 MHz lands at 41 MHz.
 
-## Documentation
+## Ordering information
 
-- `FH101RF_LZE_Datasheet_Revision_1p3b_A_1_1.pdf` — register map, telegram
-  timing, calibration procedure, electrical characteristics
-- `FH101RFBOB_en_V1R3.pdf` — board structure, pin assignment, SAW filters,
-  operating conditions, schematic
+The hardware is available in the [LZE Innovation store](https://www.lze-innovation.de).
+The GTIN identifies the exact variant and is also used as the article number
+(SKU) in the store.
+
+**FH101RFBOB breakout board** - [product page](https://www.lze-innovation.de/products/rficient-breakout-board)
+
+| Board version | Antennas included | GTIN |
+|---|---|---|
+| EU (433 / 868 / 2G4) | none | 4251800200138 |
+| EU | 433 MHz | 4251800200152 |
+| EU | 868 MHz | 4251800200169 |
+| EU | 2.4 GHz | 4251800200176 |
+| EU | 433 MHz + 868 MHz | 4251800200183 |
+| EU | 433 MHz + 2.4 GHz | 4251800200190 |
+| EU | 868 MHz + 2.4 GHz | 4251800200206 |
+| EU | 433 MHz + 868 MHz + 2.4 GHz | 4251800200213 |
+| nonEU (433 / 915 / 2G4) | none | 4251800200145 |
+| nonEU | 433 MHz | 4251800200220 |
+| nonEU | 915 MHz | 4251800200237 |
+| nonEU | 2.4 GHz | 4251800200244 |
+| nonEU | 433 MHz + 915 MHz | 4251800200251 |
+| nonEU | 433 MHz + 2.4 GHz | 4251800200268 |
+| nonEU | 915 MHz + 2.4 GHz | 4251800200275 |
+| nonEU | 433 MHz + 915 MHz + 2.4 GHz | 4251800200282 |
+
+The test setup in this project corresponds to the EU version with the 868 MHz
+antenna (GTIN 4251800200169).
+
+**FH101RF wake-up receiver IC** - [product page](https://www.lze-innovation.de/products/rficient-iot-ic), GTIN 4251800200107
+
+Both products are sold to business customers. The Adafruit Feather M0 RFM69HCW is
+a third-party product.
+
+## Data sheets
+
+The data sheets are published in the LZE Innovation store and are not part of
+this repository:
+
+| Document | Content | Download |
+|---|---|---|
+| RFicient® FH101RF data sheet, Rev. 1.3b | register map, telegram timing, calibration procedure, electrical characteristics | [PDF](https://www.lze-innovation.de/cdn/shop/files/FH101RF_LZE_Datasheet_Revision_1p3b_A_1_1.pdf) · [product page](https://www.lze-innovation.de/products/rficient-iot-ic) |
+| RFicient® FH101RF Breakout Board data sheet, Edition 1 Revision 3 | board structure, pin assignment, SAW filters, operating conditions, schematic | [PDF](https://www.lze-innovation.de/cdn/shop/files/LZE_fh101rfbobdatasheet_0103_A_OEB.pdf) · [product page](https://www.lze-innovation.de/products/rficient-breakout-board) |
+
+The product pages list the current revision of each document.
+
+The project documentation is in the [`wiki/`](wiki/Home.md) folder, which is
+mirrored into the GitHub wiki of this repository.
 
 ## License
 
 MIT License — see [LICENSE](LICENSE).
 
-The FH101RFBOB documentation (`FH101RFBOB_en_V1R3.pdf`) and the FH101RF
-datasheet are third-party documents and are not covered by this license.
+The FH101RF data sheet and the FH101RFBOB data sheet are separate documents
+published by LZE GmbH and are not covered by this license.

@@ -364,6 +364,30 @@ void rfm69_ook_standby(void)
 	rfm69WriteReg(RFM69_REG_OPMODE, RFM69_OPMODE_STANDBY);
 }
 
+bool rfm69_ook_set_power_dbm(int8_t dBm)
+{
+	uint8_t level;
+
+	if((dBm < -18) || (dBm > 13))
+	{
+		return false;
+	}
+
+	/* RegPaLevel = PA output selection | OutputPower, OutputPower = dBm + 18 */
+	level = (uint8_t)(RFM69_PA_PA1_BOOST | (uint8_t)(dBm + 18));
+
+	rfm69WriteReg(RFM69_REG_PALEVEL, level);
+
+	/* A missed SPI write would silently keep the previous power level, so the
+	   value is read back instead of trusted. */
+	return (rfm69ReadReg(RFM69_REG_PALEVEL) == level);
+}
+
+uint8_t rfm69_ook_power_reg(void)
+{
+	return rfm69ReadReg(RFM69_REG_PALEVEL);
+}
+
 uint8_t rfm69_ook_version(void)
 {
 	return rfm69Version;
