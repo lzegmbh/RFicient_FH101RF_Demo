@@ -20,7 +20,7 @@ tooling.
 |---|---|
 | Configure the FH101RF | Band, branch, FDD, IDM, data rates, LO target, IRQ source and clock mode through the `wurx` driver |
 | Calibrate the receiver | Crystal start-up, LO calibration and comparator offset calibration, each with a bounded timeout and a status flag |
-| Generate the RF signal | The RFM69HCW transmits an OOK telegram in FH101RF format (31-bit CodeA preamble at the low data rate, CodeB data at the high data rate, ID block) |
+| Generate the RF signal | The RFM69HCW transmits an OOK telegram in FH101RF format (32-bit CodeA preamble at the low data rate, CodeB data at the high data rate, ID block) |
 | Receive and evaluate | The FH101RF reports an IRQ, the driver reads correlator state, correlator value, ID reason and FIFO payload into an event store |
 | Store the events | Optional interrupt memory (`WURXIRQSTORE`) keeps up to `MAXLISTENTRIES` events with timestamp, band information and payload |
 | Show the result | All state and event data is printed on the Feather serial console |

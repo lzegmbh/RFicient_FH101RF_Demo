@@ -109,7 +109,7 @@ only the SAW filter differs between the two board versions. A board therefore su
 
 ## Checklist when the receiver does not answer
 
-1. `VDD` between 1.6 V and 3.6 V, measured at the BOB.
+1. `VDD` between 1.6 V and 3.63 V, measured at the BOB.
 2. Common ground between host and BOB.
 3. `CS_N` on the pin `FH101RF_CS_PIN` names.
 4. SPI mode 0 and MSB first - the FH101RF is not configurable here.
