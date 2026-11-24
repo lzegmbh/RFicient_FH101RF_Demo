@@ -1,0 +1,60 @@
+name: Bug report
+description: Report a problem with the driver, a sketch or the documentation
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for the report. A wake-up link depends on the board version, the antennas and
+        the configuration, so please fill in the fields below. Questions about usage are better
+        placed in the Discussions.
+  - type: dropdown
+    id: board
+    attributes:
+      label: FH101RFBOB version
+      options:
+        - EU (433 / 868 / 2G4)
+        - nonEU (433 / 915 / 2G4)
+        - Other hardware with the FH101RF
+    validations:
+      required: true
+  - type: dropdown
+    id: sketch
+    attributes:
+      label: Sketch or component
+      options:
+        - FH101TRX
+        - FH101RFRX
+        - WurxTelegramSendRfm69
+        - WurxTelegramDump
+        - Driver (wurx.c / wurx.h)
+        - Telegram generator (wurx_telegram)
+        - Documentation
+    validations:
+      required: true
+  - type: input
+    id: host
+    attributes:
+      label: Host board and toolchain
+      description: For example Adafruit Feather M0 RFM69HCW, arduino-cli 1.x, adafruit:samd 1.7.x
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened
+      description: What did you do, what did you expect and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: setup
+    attributes:
+      label: Setup
+      description: Wiring that differs from the README, antennas on receiver and transmitter, distance, changed defines or presets
+  - type: textarea
+    id: log
+    attributes:
+      label: Serial output
+      description: Output of the serial console from reset on (115200 baud)
+      render: text

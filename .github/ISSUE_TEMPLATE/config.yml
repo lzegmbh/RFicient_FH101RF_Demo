@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Question or idea
+    url: https://github.com/lzegmbh/RFicient_FH101RF_Demo/discussions
+    about: Questions about usage, the hardware or the configuration are answered in the Discussions.
+  - name: Order the hardware
+    url: https://www.lze-innovation.de/products/rficient-breakout-board
+    about: The FH101RFBOB breakout board in the LZE Innovation store.
