@@ -339,6 +339,17 @@ The product pages list the current revision of each document.
 The project documentation is in the [`wiki/`](wiki/Home.md) folder, which is
 mirrored into the GitHub wiki of this repository.
 
+## Support
+
+- **Questions and ideas:** use the [Discussions](https://github.com/lzegmbh/RFicient_FH101RF_Demo/discussions).
+- **Bugs:** open an [issue](https://github.com/lzegmbh/RFicient_FH101RF_Demo/issues/new/choose).
+  The form asks for the board version, the sketch and the serial output, which is what is
+  needed to reproduce a problem.
+- Check [Troubleshooting](wiki/troubleshooting.md) first, it covers the faults that occurred
+  during bring-up.
+
+The project is provided as an example without a guaranteed response time.
+
 ## License
 
 MIT License — see [LICENSE](LICENSE).
