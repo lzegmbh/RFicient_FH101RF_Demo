@@ -94,6 +94,6 @@ The build does not configure the hardware - `fh101rf_config.h` does:
 Every value can be overridden from outside with `-DFH101RF_CS_PIN=5` without editing the file.
 SPI is always mode 0, MSB first.
 
-**Supply voltage.** The BOB accepts 1.6 V to 3.6 V on `VDD`, and its digital inputs must not
+**Supply voltage.** The BOB accepts 1.6 V to 3.63 V on `VDD`, and its digital inputs must not
 exceed that voltage. A 5 V board therefore needs level shifting. Details in
 [FH101RF_CIRCUIT.md](FH101RF_CIRCUIT.md).

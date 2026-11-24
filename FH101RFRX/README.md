@@ -111,6 +111,10 @@ arduino-cli compile --fqbn arduino:avr:uno FH101RFRX
 arduino-cli upload  --fqbn arduino:avr:uno -p COM5 FH101RFRX
 ```
 
+An Arduino Uno works with 5 V logic and needs level shifters on `CS_N`, `MOSI` and `SCLK`,
+see [FH101RF_CIRCUIT.md](FH101RF_CIRCUIT.md). For the Feather M0 use the FQBN
+`adafruit:samd:adafruit_feather_m0`.
+
 ## Serial output (115200 baud)
 
 ```

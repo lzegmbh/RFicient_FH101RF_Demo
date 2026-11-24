@@ -68,7 +68,7 @@ Consequences for using the board:
 - The matching antenna for the nonEU board is the Linx `ANT-916-CW-HWR-SMA`
   (EU: `ANT-868-CW-HWR-SMA`).
 
-Source: [FH101RFBOB data sheet](https://www.lze-innovation.de/cdn/shop/files/LZE_fh101rfbobdatasheet_0103_A_OEB.pdf), Edition 1 Revision 3, sections
+Source: [FH101RFBOB data sheet](https://www.lze-innovation.de/cdn/shop/files/LZE_fh101rfbobdatasheet_0104_A_OEB.pdf), Edition 1 Revision 4, sections
 *Introduction*, *Board structure* (Table 3), *Operating conditions* (Table 5) and
 *Ordering information*.
 
@@ -115,7 +115,7 @@ the repository:
 | Document | Content | Download |
 |---|---|---|
 | RFicient® FH101RF data sheet, Rev. 1.3b | register map, telegram timing, calibration procedure, electrical characteristics | [PDF](https://www.lze-innovation.de/cdn/shop/files/FH101RF_LZE_Datasheet_Revision_1p3b_A_1_1.pdf) · [product page](https://www.lze-innovation.de/products/rficient-iot-ic) |
-| RFicient® FH101RF Breakout Board data sheet, Edition 1 Revision 3 | board structure, pin assignment, SAW filters, operating conditions, schematic | [PDF](https://www.lze-innovation.de/cdn/shop/files/LZE_fh101rfbobdatasheet_0103_A_OEB.pdf) · [product page](https://www.lze-innovation.de/products/rficient-breakout-board) |
+| RFicient® FH101RF Breakout Board data sheet, Edition 1 Revision 4 | board structure, pin assignment, SAW filters, operating conditions, schematic | [PDF](https://www.lze-innovation.de/cdn/shop/files/LZE_fh101rfbobdatasheet_0104_A_OEB.pdf) · [product page](https://www.lze-innovation.de/products/rficient-breakout-board) |
 
 The product pages list the current revision of each document.
 

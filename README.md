@@ -20,7 +20,7 @@ and tested without any additional tooling.
 |---|---|
 | Configure the FH101RF | Band, branch, FDD, IDM, data rates, LO target, IRQ source and clock mode are set through the `wurx` driver |
 | Calibrate the receiver | Crystal start-up, LO calibration and comparator offset calibration, each with a bounded timeout and a status flag |
-| Generate the RF signal | The RFM69HCW transmits an OOK telegram in FH101RF format (31-bit CodeA preamble at the low data rate, CodeB data at the high data rate, ID block) |
+| Generate the RF signal | The RFM69HCW transmits an OOK telegram in FH101RF format (32-bit CodeA preamble at the low data rate, CodeB data at the high data rate, ID block) |
 | Receive and evaluate | The FH101RF reports an IRQ, the driver reads correlator state, correlator value, ID reason and FIFO payload into an event store |
 | Store the events | Optional interrupt memory (`WURXIRQSTORE`) keeps up to `MAXLISTENTRIES` events with timestamp, band information and payload |
 | Show the result | All state and event data is printed on the Feather serial console |
@@ -86,7 +86,7 @@ consequences for using the board are described in
 The transmitter has to match the receiver configuration, otherwise no wake-up
 event is generated:
 
-1. **Low data rate (LDR)** — a 31-bit CodeA sequence is sent as the wake-up
+1. **Low data rate (LDR)** — a 32-bit CodeA sequence is sent as the wake-up
    preamble. The default preset uses 1 kbit/s.
 2. **High data rate (HDR)** — after the preamble the receiver switches to the
    high data rate, where CodeA and CodeB chips form the data bits. The default
@@ -332,7 +332,7 @@ this repository:
 | Document | Content | Download |
 |---|---|---|
 | RFicient® FH101RF data sheet, Rev. 1.3b | register map, telegram timing, calibration procedure, electrical characteristics | [PDF](https://www.lze-innovation.de/cdn/shop/files/FH101RF_LZE_Datasheet_Revision_1p3b_A_1_1.pdf) · [product page](https://www.lze-innovation.de/products/rficient-iot-ic) |
-| RFicient® FH101RF Breakout Board data sheet, Edition 1 Revision 3 | board structure, pin assignment, SAW filters, operating conditions, schematic | [PDF](https://www.lze-innovation.de/cdn/shop/files/LZE_fh101rfbobdatasheet_0103_A_OEB.pdf) · [product page](https://www.lze-innovation.de/products/rficient-breakout-board) |
+| RFicient® FH101RF Breakout Board data sheet, Edition 1 Revision 4 | board structure, pin assignment, SAW filters, operating conditions, schematic | [PDF](https://www.lze-innovation.de/cdn/shop/files/LZE_fh101rfbobdatasheet_0104_A_OEB.pdf) · [product page](https://www.lze-innovation.de/products/rficient-breakout-board) |
 
 The product pages list the current revision of each document.
 
