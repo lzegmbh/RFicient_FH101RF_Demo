@@ -3,7 +3,7 @@ description: Report a problem with the driver, a sketch or the documentation
 title: "[Bug] "
 labels: ["bug"]
 assignees:
-  - lzejahn
+  - Foxy-code-dot
 body:
   - type: markdown
     attributes:
